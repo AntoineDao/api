@@ -14,7 +14,7 @@ info:
 
 externalDocs:
   description: Find out more about Pollination Cloud.
-  url: 'https://www.pollination.cloud'
+  url: 'https://pollination.cloud/'
 
 servers:
   - url: 'http://api.pollination.cloud'
