@@ -43,8 +43,8 @@ get:
       $ref: "#/components/responses/Forbidden"
     404:
       $ref: "#/components/responses/NotFound"
-    406:
-      $ref: "#/components/responses/Invalid"
+    422:
+      $ref: "#/components/responses/ValidationError"
     # add does not exist
 delete:
   tags:
@@ -61,5 +61,5 @@ delete:
       $ref: "#/components/responses/Refused"
     404:
       $ref: "#/components/responses/NotFound"
-    406:
-      $ref: "#/components/responses/Invalid"
+    422:
+      $ref: "#/components/responses/ValidationError"

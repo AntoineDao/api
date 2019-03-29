@@ -13,8 +13,8 @@ post:
       $ref: "#/components/responses/Unauthorized"
     403:
       $ref: "#/components/responses/Forbidden"
-    406:
-      $ref: "#/components/responses/Invalid"
+    422:
+      $ref: "#/components/responses/ValidationError"
     415:
       $ref: "#/components/responses/Unsupported"
 get:

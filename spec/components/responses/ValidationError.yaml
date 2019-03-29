@@ -1,4 +1,4 @@
-description: Invalid input data
+description: Validation Error
 content:
   application/json:
     schema:
