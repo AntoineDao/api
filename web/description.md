@@ -48,6 +48,274 @@ This Link response header contains one or more Hypermedia link relations. The po
 | `first` | The link relation for the first page of results. |
 | `prev` | The link relation for the immediate previous page of results. |
 
+# Example
+
+This example is a step by step guide for running a grid-based simulation using
+Pollination.
+
+## 1. Create a model
+
+The first step for creating a simulation is to
+[submit your model](/#operation/create_model). A model includes geometry and
+related metadata for that geometry. It can be translated to analysis models that can be
+used by engines such as Radiance, OpenStudio or EnergyPlus.
+
+Pollination supports two different model schema.
+See [this link](/#operation/create_model) for detailed schemas side by side.
+
+1. `Model`: Also known as `PollinationModel` is what Pollination uses under the hood. It
+   is designed to be efficient for storing and access but it is not necessarily easy to
+   create for models with openings/ apertures (see `vertices_ext` under `ModelFace`). If
+   you can create a `PollinationModel` from your client side you make us and our severs
+   very happy! If you can't we can still be friends. Just use `FaceByFaceModel`!
+
+2. `FaceByFaceModel`: Face-by-face model provides a workflow to create a model by sending
+   a list of faces. Each face can be a `Face`, `PolyFace` or a `ShadeFace`.
+
+You can download a sample room with a single window for each schema from the links below:
+[Face by face model](https://github.com/pollination/api/blob/master/spec/schema_samples/model_facebyface.json), 
+[Pollination model](https://github.com/pollination/api/blob/master/spec/schema_samples/model_pollination.json)
+
+Once you have created your model you can [submit your `model`](/#operation/create_model).
+**POST /models** returns a `202 Accepted` response.
+[Use `url` field in the response](/#operation/get_model) to monitor the process of
+validating the model. If the model is valid you will receive a `200 Retrieved` response
+with an `id` and other information for your model. Here is a sample response for a model
+that is submitted successfully.
+
+```json
+{
+  "convert_to_meters": 1,
+  "name": "string",
+  "id": "123e4567-e89b-12d3-a456-426655440000",
+  "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000",
+  "history": [
+    {
+      "status": "Submitted",
+      "timestamp": "2019-03-11T18:47:13Z"
+    },
+    {
+      "status": "Created",
+      "timestamp": "2019-03-11T18:50:16Z"
+    }
+  ],
+  "logs": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/logs",
+  "vertices": {
+    "count": 200,
+    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/vertices"
+  },
+  "rad_modifiers": {
+    "count": 13,
+    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/rad_modifiers"
+  },
+  "faces": {
+    "count": 65,
+    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/faces"
+  },
+  "dynamic_faces": {
+    "count": 0,
+    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/dynamic_faces"
+  }
+}
+```
+
+Keep the model `id` for the final step to create a simulation.
+
+**Pro tip**: In most cases you will use a single `model` to describe your simulation
+scene however you can break down the scene in several models and send several models to a
+single `simulation`. This is helpful for different scenarios. For instance you can create
+the context as a separate model and then make a separate model for the test building. In
+this case if you make a change to the building you don't have to resubmit the context.
+
+Another scenario is for parametric studies where you can submit the static parts of the
+scene as a separate model and then submit the parametric parts of the model separately
+for each state. Now you can use the base model in combination with each state of the
+parametric model to create several simulations without resubmitting the base model.
+
+
+## 2. Create a sensor grid 
+
+After submitting the models you need to create the sensor grids. A sensor grid is a
+collection of sensors in which the simulation values will be calculated. Each sensor has
+6 values. The first 3 values represents the location of the sensor and the second 3
+values indicate the direction of the sensor.
+
+You can submit a [sensor grid](#operation/get_sensor_grids) using **/sensor-grids**
+endpoint. If your grid is valid you will receive a `200 Retrieved` response with the `id`
+for this grid. By now you should know what do you need to do. Keep the grid `id`!
+
+```json
+{
+  "type": "SensorGrid",
+  "id": "1234-567-3344-99",
+  "sensor_count": 2000,
+  "name": "study_room",
+  "url": "api.pollination.cloud/1234-567-3344-99/sensors"
+}
+```
+
+## 3. Create a simulation
+
+Now that we have the model ids and grid ids in hand we can create a `simulation`. Use
+[simulations](/#operation/create_simulation) endpoint to submit your simulation. The
+response will be `202 Accepted` with the `url` to the simulation. Now that the simulation
+is created use the `url` to [access the possible actions](/#operation/get_simulation)
+for this simulation. There will be one for starting the simulation. 
+  
+```json
+{
+  // [...] ,
+  "actions": [
+    {
+      "description": "Start the simulation.",
+      "verb": "put",
+      "payload": {"action": "start"},
+      "url": "api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-42665544/actions"
+    },
+    {
+      "description": "Stop the simulation.",
+      "verb": "put",
+      "payload": {"action": "stop"},
+      "url": "api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-42665544/actions"
+    }
+  ],
+  // [...]
+}
+```
+
+## 4. Start the simulation
+
+Use the start action from step 3 to start the simulation. Starting a simulation is
+considered an `action` and is accessible via
+[/simulations/{id}/actions](/#operation/control_simulation) endpoint.
+
+Once the simulation is started check the `simulation` using the simulation
+`url` and monitor the `history` of the simulation. Possible options are `Created`,
+`Started`, `Canceled` and `Finished`.
+
+```json
+{
+  "type": "DaylightFactor",
+  "grids": [
+    "123e4567-e89b-12d3-a456-426655440000"
+  ],
+  "models": [
+    "123e4567-e89b-12d3-a456-426655440000"
+  ],
+  "radiance_parameters": {
+    "base": "default",
+    "overwrite": "-ab 5 -aa 0.01 -ad 4800"
+  },
+  "name": "market_place_comfort_study",
+  "id": "123e4567-e89b-12d3-a456-426655440000",
+  "depends_on": [
+    "market_place_radiation_simulation",
+    "market_place_airflow_simulation"
+  ],
+  "logs": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/logs",
+  "outputs": [
+    {
+      "verb": "post",
+      "description": "*.res file generated by Radiance.",
+      "payload": {
+        "output": "file"
+      },
+      "url": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/outputs"
+    },
+    {
+      "verb": "post",
+      "description": "List of list of values for each sensor-grid.",
+      "payload": {
+        "output": "values"
+      },
+      "url": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/outputs"
+    },
+    {
+      "verb": "post",
+      "description": "List of average values for each sensor-grid.",
+      "payload": {
+        "output": "average"
+      },
+      "url": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/outputs"
+    }
+  ],
+  "actions": [
+    {
+      "description": "Start the simulation.",
+      "verb": "put",
+      "payload": {
+        "action": "start"
+      },
+      "url": "api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-42665544/actions"
+    },
+    {
+      "description": "Stop the simulation.",
+      "verb": "put",
+      "payload": {
+        "action": "stop"
+      },
+      "url": "api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-42665544/actions"
+    }
+  ],
+  "status": {
+    "status": "Started",
+    "history": [
+        {
+          "status": "Created",
+          "timestamp": "2019-03-11T18:47:13Z"
+        },
+        {
+          "status": "Started",
+          "timestamp": "2019-03-11T18:47:33Z"
+        }
+    ]
+
+  }
+}
+```
+
+Once the simulation is `Finished` you should check the `status` to see if the simulation
+has `Failed` or `Succeeded`. If the status is `Failed` you can see the `logs` field in
+the same response otherwise it is the time to retrieve the simulation outputs! :D
+
+## 5. Retrieve the outputs
+
+If you look closer to the response for simulation there is also a field for `outputs`.
+Similar to `start` and `stop`, `outputs` are also `actions`. Each output has its specific
+information. Here is a possible list of outputs for a daylight factor simulation.
+
+```json
+{
+  // [...] ,
+  "outputs": [
+    {
+      "verb": "post",
+      "description": "*.res file generated by Radiance.",
+      "payload": {},
+      "url": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/outputs"
+    },
+    {
+      "verb": "post",
+      "description": "List of list of values for each sensor-grid.",
+      "payload": {},
+      "url": "https://api.pollination.cloud/simulations/123e4567-e89b-12d3-a456-426655440000/outputs"
+    }
+  ],
+  // [...]
+}
+```
+
+NOTE: Keep in mind that most of outputs result in generating new resources and are
+accessed by `Post` requests.
+
+## 6. Workflows
+
+You can use [Pollination workflows](/#tag/Workflow) to execute more than one simulation
+at the same time. A workflow can be used to run parametric studies or to create custom
+combination of simulations. Simulations can depend on each other and the outputs from one
+simulation can be passed to one or more follow up simulations.
+
+
 # Access
 
 The service is currently a work in progress and is available by invitation only. Follow
