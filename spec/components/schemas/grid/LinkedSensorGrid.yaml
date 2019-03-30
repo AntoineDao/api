@@ -19,7 +19,7 @@ properties:
     readOnly: true
   name:
     $ref: "#/components/schemas/ValidString"
-  sensors_url:
+  url:
     description: link to sensors.
     type: string
 example:
@@ -28,5 +28,5 @@ example:
     "id": "1234-567-3344-99",
     "sensor_count": 20000, 
     "name": "example_grid",
-    "sensors_url": "api.pollination.cloud/1234-567-3344-99/sensors"
+    "url": "api.pollination.cloud/1234-567-3344-99/sensors"
   }
