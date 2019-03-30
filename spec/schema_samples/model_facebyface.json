@@ -1,15 +1,19 @@
 {
     "convert_to_meters": 1,
     "type": "FaceByFaceModel",
+    "name": "face_by_face_model",
     "faces": [
         {
             "name": "floor",
             "face_type": "Floor",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_floor",
                 "r_reflectance": 0.2,
                 "g_reflectance": 0.2,
@@ -18,7 +22,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -49,10 +53,13 @@
             "name": "ceiling",
             "face_type": "RoofCeiling",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_roof",
                 "r_reflectance": 0.8,
                 "g_reflectance": 0.8,
@@ -61,7 +68,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -91,11 +98,14 @@
         {
             "name": "back_wall",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_wall",
                 "r_reflectance": 0.5,
                 "g_reflectance": 0.5,
@@ -104,7 +114,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -129,16 +139,59 @@
                     0,
                     7.4
                 ]
-            ]
+            ],
+            "aperture": {
+                "name": "back_glazing",
+                "face_type": "Window",
+                "type": "Aperture",
+                "parent": {
+                    "name": "back_wall",
+                    "type": "face"
+                },
+                "rad_modifier": {
+                    "modifier": "void",
+                    "type": "Glass",
+                    "name": "generic_glass",
+                    "r_transmittance": 0.6,
+                    "g_transmittance": 0.6,
+                    "b_transmittance": 0.6,
+                    "refraction_index": 1.52
+                },
+                "vertices": [
+                    [
+                        0.7778174593052024,
+                        0.7778174593052023,
+                        3.9000000000000004
+                    ],
+                    [
+                        2.1920310216782974,
+                        2.192031021678297,
+                        3.9000000000000004
+                    ],
+                    [
+                        2.1920310216782974,
+                        2.192031021678297,
+                        5.9
+                    ],
+                    [
+                        0.7778174593052024,
+                        0.7778174593052023,
+                        5.9
+                    ]
+                ]
+            }
         },
         {
             "name": "right_wall",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_wall",
                 "r_reflectance": 0.5,
                 "g_reflectance": 0.5,
@@ -147,7 +200,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -177,11 +230,14 @@
         {
             "name": "front_wall",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_wall",
                 "r_reflectance": 0.5,
                 "g_reflectance": 0.5,
@@ -190,7 +246,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -220,11 +276,14 @@
         {
             "name": "left_wall",
             "type": "Face",
-            "parent": "south_room",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": {
                 "modifier": "void",
-                "type": "plastic",
+                "type": "Plastic",
                 "name": "generic_wall",
                 "r_reflectance": 0.5,
                 "g_reflectance": 0.5,
@@ -233,7 +292,7 @@
                 "roughness": 0
             },
             "rad_modifier_dir": {
-                "type": "opaque",
+                "type": "Opaque",
                 "name": "black",
                 "reflectance": 0
             },
@@ -257,45 +316,6 @@
                     -4.242640687119285,
                     4.242640687119286,
                     3.2
-                ]
-            ]
-        }
-    ],
-    "apertures": [
-        {
-            "name": "back_glazing_0",
-            "face_type": "Window",
-            "type": "Aperture",
-            "parent": "back_wall",
-            "rad_modifier": {
-                "modifier": "void",
-                "type": "glass",
-                "name": "generic_glass",
-                "r_transmittance": 0.6,
-                "g_transmittance": 0.6,
-                "b_transmittance": 0.6,
-                "refraction_index": 1.52
-            },
-            "vertices": [
-                [
-                    0.7778174593052024,
-                    0.7778174593052023,
-                    3.9000000000000004
-                ],
-                [
-                    2.1920310216782974,
-                    2.192031021678297,
-                    3.9000000000000004
-                ],
-                [
-                    2.1920310216782974,
-                    2.192031021678297,
-                    5.9
-                ],
-                [
-                    0.7778174593052024,
-                    0.7778174593052023,
-                    5.9
                 ]
             ]
         }

@@ -1,6 +1,7 @@
 {
     "convert_to_meters": 1,
     "type": "Model",
+    "name": "sample_room",
     "vertices": [
         [
             0,
@@ -65,13 +66,13 @@
     ],
     "rad_materials": [
         {
-            "type": "opaque",
+            "type": "Opaque",
             "name": "black",
             "reflectance": 0
         },
         {
             "modifier": "void",
-            "type": "plastic",
+            "type": "Plastic",
             "name": "generic_floor",
             "r_reflectance": 0.2,
             "g_reflectance": 0.2,
@@ -81,7 +82,7 @@
         },
         {
             "modifier": "void",
-            "type": "plastic",
+            "type": "Plastic",
             "name": "generic_roof",
             "r_reflectance": 0.8,
             "g_reflectance": 0.8,
@@ -91,7 +92,7 @@
         },
         {
             "modifier": "void",
-            "type": "plastic",
+            "type": "Plastic",
             "name": "generic_wall",
             "r_reflectance": 0.5,
             "g_reflectance": 0.5,
@@ -101,7 +102,7 @@
         },
         {
             "modifier": "void",
-            "type": "glass",
+            "type": "Glass",
             "name": "generic_glass",
             "r_transmittance": 0.6,
             "g_transmittance": 0.6,
@@ -113,9 +114,11 @@
         {
             "name": "floor",
             "face_type": "Floor",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "rad_modifier": 1,
             "rad_modifier_dir": 0,
             "vertices": [
@@ -128,9 +131,11 @@
         {
             "name": "ceiling",
             "face_type": "RoofCeiling",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "rad_modifier": 2,
             "rad_modifier_dir": 0,
             "vertices": [
@@ -142,9 +147,11 @@
         },
         {
             "name": "back_wall",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": 3,
             "rad_modifier_dir": 0,
@@ -170,9 +177,11 @@
         },
         {
             "name": "right_wall",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": 3,
             "rad_modifier_dir": 0,
@@ -185,9 +194,11 @@
         },
         {
             "name": "front_wall",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": 3,
             "rad_modifier_dir": 0,
@@ -200,9 +211,11 @@
         },
         {
             "name": "left_wall",
-            "type": "Face",
-            "is_aperture": false,
-            "parent": "south_room",
+            "type": "ModelFace",
+            "parent": {
+                "name": "south_room",
+                "type": "zone"
+            },
             "face_type": "Wall",
             "rad_modifier": 3,
             "rad_modifier_dir": 0,
@@ -212,15 +225,15 @@
                 7,
                 1
             ]
-        }
-    ],
-    "apertures": [
+        },
         {
             "name": "back_glazing_0",
             "face_type": "Window",
-            "is_aperture": true,
-            "type": "Aperture",
-            "parent": "back_wall",
+            "type": "ModelAperture",
+            "parent": {
+                "name": "back_wall",
+                "type": "face"
+            },
             "rad_modifier": 4,
             "vertices": [
                 8,
