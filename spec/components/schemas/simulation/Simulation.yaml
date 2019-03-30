@@ -41,7 +41,7 @@ example:
   {
     "name": "market_place_comfort_study",
     "id": "123e4567-e89b-12d3-a456-426655440000",
-    "dependes_on": [
+    "depends_on": [
       "market_place_radiation_simulation", 
       "market_place_airflow_simulation"
     ],

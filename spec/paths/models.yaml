@@ -25,7 +25,7 @@ get:
   operationId: get_models
   responses:
     200:
-      $ref: "#/components/responses/RetrivedModels"
+      $ref: "#/components/responses/RetrievedModels"
     401:
       $ref: "#/components/responses/Unauthorized"
     403:

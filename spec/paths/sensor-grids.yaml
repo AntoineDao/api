@@ -27,7 +27,7 @@ get:
   operationId: get_sensor_grids
   responses:
     200:
-      description: Retrived
+      description: Retrieved
       headers:
         Link:
           $ref: "#/components/headers/LinkHeader"

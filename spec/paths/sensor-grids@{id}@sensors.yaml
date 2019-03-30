@@ -32,7 +32,7 @@ get:
   operationId: get_sensors
   responses:
     200:
-      description: Retrived
+      description: Retrieved
       headers:
         Link:
           $ref: "#/components/headers/LinkHeader"

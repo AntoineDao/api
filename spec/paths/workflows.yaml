@@ -27,7 +27,7 @@ get:
   operationId: get_workflows
   responses:
     200:
-      $ref: "#/components/responses/RetrivedWorkflows"
+      $ref: "#/components/responses/RetrievedWorkflows"
     401:
       $ref: "#/components/responses/Unauthorized"
     403:

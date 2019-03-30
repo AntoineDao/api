@@ -49,7 +49,7 @@ get:
             type: integer
             default: 60
     200:
-      description: Retrived
+      description: Retrieved
       headers:
         Link:
           $ref: "#/components/headers/LinkHeader"
