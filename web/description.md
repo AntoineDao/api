@@ -58,16 +58,18 @@ Pollination.
 The first step for creating a simulation is to
 [submit your model](/#operation/create_model). A model includes geometry and
 related metadata for that geometry. It can be translated to analysis models that can be
-used by engines such as Radiance, OpenStudio or EnergyPlus.
+used by engines such as Radiance, OpenStudio/ EnergyPlus.
 
-Pollination supports two different model schema.
+Pollination supports two different model schemas.
 See [this link](/#operation/create_model) for detailed schemas side by side.
 
 1. `Model`: Also known as `PollinationModel` is what Pollination uses under the hood. It
    is designed to be efficient for storing and access but it is not necessarily easy to
    create for models with openings/ apertures (see `vertices_ext` under `ModelFace`). If
-   you can create a `PollinationModel` from your client side you make us and our severs
-   very happy! If you can't we can still be friends. Just use `FaceByFaceModel`!
+   you can create a `PollinationModel` from your client side that will save us from
+   translating the model which will make us and our severs very happy! If you can't we
+   can still be friends. Just use `FaceByFaceModel` and Pollination translates it to a
+   `PollinationModel`!
 
 2. `FaceByFaceModel`: Face-by-face model provides a workflow to create a model by sending
    a list of faces. Each face can be a `Face`, `PolyFace` or a `ShadeFace`.
@@ -136,13 +138,14 @@ parametric model to create several simulations without resubmitting the base mod
 ## 2. Create a sensor grid 
 
 After submitting the models you need to create the sensor grids. A sensor grid is a
-collection of sensors in which the simulation values will be calculated. Each sensor has
-6 values. The first 3 values represents the location of the sensor and the second 3
-values indicate the direction of the sensor.
+collection of sensors at which simulation values will be calculated. Each sensor has
+6 values. The first 3 values represents the X, Y and Z coordinates for the location of
+the sensor in 3D space. The second 3 values indicate the X, Y and Z components of the
+vector for the direction that the sensor is facing.
 
 You can submit a [sensor grid](#operation/get_sensor_grids) using **/sensor-grids**
 endpoint. If your grid is valid you will receive a `200 Retrieved` response with the `id`
-for this grid. By now you should know what do you need to do. Keep the grid `id`!
+for this grid. By now, you should know what you need to do. Keep the grid `id`!
 
 ```json
 {
@@ -157,9 +160,9 @@ for this grid. By now you should know what do you need to do. Keep the grid `id`
 ## 3. Create a simulation
 
 Now that we have the model ids and grid ids in hand we can create a `simulation`. Use
-[simulations](/#operation/create_simulation) endpoint to submit your simulation. The
+the [simulations](/#operation/create_simulation) endpoint to submit your simulation. The
 response will be `202 Accepted` with the `url` to the simulation. Now that the simulation
-is created use the `url` to [access the possible actions](/#operation/get_simulation)
+has been created you can use the `url` to [access the possible actions](/#operation/get_simulation)
 for this simulation. There will be one for starting the simulation. 
   
 ```json
@@ -186,7 +189,7 @@ for this simulation. There will be one for starting the simulation.
 ## 4. Start the simulation
 
 Use the start action from step 3 to start the simulation. Starting a simulation is
-considered an `action` and is accessible via
+considered an `action` and is accessible via the
 [/simulations/{id}/actions](/#operation/control_simulation) endpoint.
 
 Once the simulation is started check the `simulation` using the simulation
@@ -276,11 +279,11 @@ Once the simulation is started check the `simulation` using the simulation
 
 Once the simulation is `Finished` you should check the `status` to see if the simulation
 has `Failed` or `Succeeded`. If the status is `Failed` you can see the `logs` field in
-the same response otherwise it is the time to retrieve the simulation outputs! :D
+the same response. Otherwise, it is the time to retrieve the simulation outputs! :D
 
 ## 5. Retrieve the outputs
 
-If you look closer to the response for simulation there is also a field for `outputs`.
+If you look closer at the response for simulation there is also a field for `outputs`.
 Similar to `start` and `stop`, `outputs` are also `actions`. Each output has its specific
 information. Here is a possible list of outputs for a daylight factor simulation.
 
