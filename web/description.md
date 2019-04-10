@@ -60,64 +60,37 @@ The first step for creating a simulation is to
 related metadata for that geometry. It can be translated to analysis models that can be
 used by engines such as Radiance, OpenStudio/ EnergyPlus.
 
-Pollination supports two different model schemas.
-See [this link](/#operation/create_model) for detailed schemas side by side.
+[Pollination model](/#operation/create_model) schema is a collection of different type
+of faces. Each face can be a `Face`, `PolyFace` or a `ShadeFace`.
 
-1. `Model`: Also known as `PollinationModel` is what Pollination uses under the hood. It
-   is designed to be efficient for storing and access but it is not necessarily easy to
-   create for models with openings/ apertures (see `vertices_ext` under `ModelFace`). If
-   you can create a `PollinationModel` from your client side that will save us from
-   translating the model which will make us and our severs very happy! If you can't we
-   can still be friends. Just use `FaceByFaceModel` and Pollination translates it to a
-   `PollinationModel`!
-
-2. `FaceByFaceModel`: Face-by-face model provides a workflow to create a model by sending
-   a list of faces. Each face can be a `Face`, `PolyFace` or a `ShadeFace`.
-
-You can download a sample room with a single window for each schema from the links below:
-[Face by face model](https://github.com/pollination/api/blob/master/spec/schema_samples/model_facebyface.json), 
-[Pollination model](https://github.com/pollination/api/blob/master/spec/schema_samples/model_pollination.json)
+You can download a sample model from
+[this link](https://github.com/pollination/model-service/blob/master/app/models/samples/model.py).
 
 Once you have created your model you can [submit your `model`](/#operation/create_model).
-**POST /models** returns a `202 Accepted` response.
-[Use `url` field in the response](/#operation/get_model) to monitor the process of
-validating the model. If the model is valid you will receive a `200 Retrieved` response
-with an `id` and other information for your model. Here is a sample response for a model
+**POST /models** returns a `201 Created` response with with the `Location` information
+in the header and an `id` in the response. Here is a sample response for a model
 that is submitted successfully.
 
 ```json
 {
-  "convert_to_meters": 1,
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "message": "Use Location in headers to access the new object."
+}
+```
+
+You can also use the `Link` to retrieve the model object.
+
+```json
+{
+  "type": "Model",
+  "id": "string",
   "name": "string",
-  "id": "123e4567-e89b-12d3-a456-426655440000",
-  "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000",
-  "history": [
-    {
-      "status": "Submitted",
-      "timestamp": "2019-03-11T18:47:13Z"
-    },
-    {
-      "status": "Created",
-      "timestamp": "2019-03-11T18:50:16Z"
-    }
-  ],
-  "logs": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/logs",
-  "vertices": {
-    "count": 200,
-    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/vertices"
-  },
-  "rad_modifiers": {
-    "count": 13,
-    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/rad_modifiers"
-  },
-  "faces": {
-    "count": 65,
-    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/faces"
-  },
-  "dynamic_faces": {
-    "count": 0,
-    "url": "https://api.pollination.cloud/models/123e4567-e89b-12d3-a456-426655440000/dynamic_faces"
-  }
+  "convert_to_meters": 1,
+  "face_count": 20,
+  "created_at": "2019-04-07 22:34:16.764143",
+  "url": "https://api.pollination.cloud/models/7bd00d58-6485-4ca6-b889-3da6d8df3ee4",
+  "faces_url": "https://api.pollination.cloud/models/7bd00d58-6485-4ca6-b889-3da6d8df3ee4/faces"
+
 }
 ```
 
@@ -143,17 +116,27 @@ collection of sensors at which simulation values will be calculated. Each sensor
 the sensor in 3D space. The second 3 values indicate the X, Y and Z components of the
 vector for the direction that the sensor is facing.
 
-You can submit a [sensor grid](#operation/get_sensor_grids) using **/sensor-grids**
-endpoint. If your grid is valid you will receive a `200 Retrieved` response with the `id`
+You can submit a [sensor grid](#operation/create_sensor_grid) using **/sensor-grids**
+endpoint. If your grid is valid you will receive a `201 Created` response with the `id`
 for this grid. By now, you should know what you need to do. Keep the grid `id`!
 
 ```json
 {
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "message": "Use Location in headers to access the new object."
+}
+```
+
+You can also use the `Link` to retrieve the model object.
+
+```json
+{
   "type": "SensorGrid",
-  "id": "1234-567-3344-99",
-  "sensor_count": 2000,
+  "id": "7bd00d58-6485-4ca6-b889-3da6d8df3ee4",
+  "sensor_count": 200,
   "name": "study_room",
-  "url": "api.pollination.cloud/1234-567-3344-99/sensors"
+  "url": "https://api.pollination.cloud/sensor-grids/7bd00d58-6485-4ca6-b889-3da6d8df3ee4",
+  "sensors_url": "https://api.pollination.cloud/sensor-grids/7bd00d58-6485-4ca6-b889-3da6d8df3ee4/sensors"
 }
 ```
 
