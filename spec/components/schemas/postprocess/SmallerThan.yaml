@@ -1,4 +1,0 @@
-type: object
-description: Schema for calculating number of sensors with value smaller than threshold.
-allOf:
-  - $ref: "#/components/schemas/LargerThan"

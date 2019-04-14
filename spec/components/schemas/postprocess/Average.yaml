@@ -1,4 +1,0 @@
-type: object
-description: Schema for calculating average values for grid-based studies.
-allOf:
-  - $ref: "#/components/schemas/GridBasedPostProcess"

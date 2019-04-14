@@ -1,7 +1,0 @@
-content:
-  application/json:
-    schema:
-      oneOf:
-        - $ref: "#/components/schemas/DaylightFactor"
-        - $ref: "#/components/schemas/PointInTime"
-required: true

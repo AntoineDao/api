@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.2
 info:
   version: 0.0.1
   title: pollination.cloud API
@@ -20,14 +20,14 @@ servers:
   - url: 'http://api.pollination.cloud'
 
 tags:
-  - name: Sensor Grid
-    description: |
-      Sensor Grid is a collection of sensors for grid-based studies.
   - name: Model
     description: |
       Models includes geometrical information as well as materials, constructions,
       and boundary conditions to describe a simulation model for daylight and energy
       and CFD modeling.
+  - name: Sensor Grid
+    description: |
+      Sensor Grid is a collection of sensors for grid-based studies.
   - name: Simulation
     description: |
       Simulation in Pollination is an executable recipe which has a set of predefined

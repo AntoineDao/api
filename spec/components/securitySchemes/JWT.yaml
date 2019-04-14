@@ -1,6 +1,0 @@
-description: |
-  JSON Web Token (JWT).
-  Usage format: `Bearer <JWT>`
-type: http
-scheme: bearer
-bearerFormat: JWT

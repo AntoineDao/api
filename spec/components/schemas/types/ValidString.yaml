@@ -1,3 +1,0 @@
-description: A text input with no white space or special character
-type: string
-pattern: "^[.A-Za-z0-9_-]*$"

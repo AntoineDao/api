@@ -1,4 +1,0 @@
-description: Timestamp
-type: string
-format: datetime
-example: "2019-03-11T18:47:13Z"

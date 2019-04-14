@@ -1,0 +1,3669 @@
+components:
+  schemas:
+    Accepted:
+      description: Accepted request response.
+      properties:
+        message:
+          default: The request is accepted. Use url to access the resource once ready.
+          description: ' A human readable message'
+          example: The request is accepted. Use url to access the resource once ready.
+          title: Message
+          type: string
+        url:
+          description: Url to access the requested resource.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Url
+          type: string
+      required:
+      - url
+      title: Accepted
+      type: object
+    Aperture:
+      description: Aperture Schema
+      properties:
+        blinds:
+          default: []
+          items:
+            $ref: '#/components/schemas/ShadeFace'
+          title: Blinds
+          type: array
+        face_type:
+          enum:
+          - Window
+          title: Face_Type
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        parent:
+          $ref: '#/components/schemas/ParentFace'
+        rad_modifier:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier
+        rad_modifier_dir:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier_Dir
+        type:
+          enum:
+          - Aperture
+          title: Type
+        vertices:
+          items:
+            $ref: '#/components/schemas/Vertex'
+          title: Vertices
+          type: array
+      required:
+      - rad_modifier
+      - name
+      - vertices
+      - face_type
+      - type
+      - parent
+      title: Aperture
+      type: object
+    CIESky:
+      description: Radiance standard CIE sky.
+      properties:
+        datetime:
+          $ref: '#/components/schemas/DateTime'
+        location:
+          $ref: '#/components/schemas/Location'
+        north:
+          default: 0
+          description: A number between -360 and 360 that represents the degrees off
+            from the y-axis to make North. The default North direction is set to the
+            Y-axis. Default is 0 degrees.
+          maximum: 360.0
+          minimum: -360.0
+          title: North
+          type: number
+        sky_type:
+          default: +s
+          enum:
+          - +s
+          - -s
+          - +i
+          - -i
+          - -c
+          - -u
+          title: Sky_Type
+          type: string
+      required:
+      - location
+      - datetime
+      title: CIESky
+      type: object
+    ClimateBasedSky:
+      description: Radiance climate-based sky.
+      properties:
+        datetime:
+          $ref: '#/components/schemas/DateTime'
+        diffuse_irradiance:
+          description: Diffuse-horizontal irradiance in W/m^2.
+          title: Diffuse_Irradiance
+          type: number
+        direct_irradiance:
+          description: Direct-normal irradiance in W/m^2.
+          title: Direct_Irradiance
+          type: number
+        location:
+          $ref: '#/components/schemas/Location'
+        north:
+          default: 0
+          description: A number between -360 and 360 that represents the degrees off
+            from the y-axis to make North. The default North direction is set to the
+            Y-axis. Default is 0 degrees.
+          maximum: 360.0
+          minimum: -360.0
+          title: North
+          type: number
+      required:
+      - location
+      - datetime
+      - direct_irradiance
+      - diffuse_irradiance
+      title: ClimateBasedSky
+      type: object
+    CreatedContent:
+      description: Content for created response.
+      properties:
+        id:
+          description: Id for the newly created resource.
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+          format: uuid
+          title: Id
+          type: string
+        message:
+          description: ' A human readable message'
+          example: Use Location in headers to access the new object.
+          title: Message
+          type: string
+      required:
+      - id
+      title: CreatedContent
+      type: object
+    DateTime:
+      description: DateTime.
+      properties:
+        day:
+          default: 1
+          description: A value for day between `1`-`31`. Default is `1`.
+          maximum: 31.0
+          minimum: 1.0
+          title: Day
+          type: integer
+        hour:
+          default: 0
+          description: A value for hour between `0`-`23`. Default is `0`.
+          maximum: 23.0
+          minimum: 0.0
+          title: Hour
+          type: integer
+        is_leap_year:
+          default: false
+          description: A boolean to indicate if datetime is for a leap year. Default
+            is `false`.
+          title: Is_Leap_Year
+          type: boolean
+        minute:
+          default: 0
+          description: A value for month between `0`-`59`. Default is `0`.
+          maximum: 59.0
+          minimum: 0.0
+          title: Minute
+          type: integer
+        month:
+          default: 1
+          description: A value for month between `1`-`12`. Default is `1`.
+          maximum: 12.0
+          minimum: 1.0
+          title: Month
+          type: integer
+      title: DateTime
+      type: object
+    DaylightFactorGridBasedIn:
+      description: Daylight factor recipe.
+      properties:
+        depends_on:
+          description: Name of other simulations that this simulation depends on.
+            This simulation will be executed after all dependencies are finished.
+          items:
+            type: string
+          title: Depends_On
+          type: array
+        grid_ids:
+          description: List of sensor grid ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Grid_Ids
+          type: array
+        kind:
+          default: GirdBased
+          pattern: GirdBased
+          title: Kind
+          type: string
+        model_ids:
+          description: List of model ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Model_Ids
+          type: array
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        radiance_parameters:
+          $ref: '#/components/schemas/RadianceParameters'
+        type:
+          default: DaylightFactor
+          pattern: DaylightFactor
+          title: Type
+          type: string
+      required:
+      - name
+      - depends_on
+      - grid_ids
+      title: DaylightFactorGridBasedIn
+      type: object
+    DaylightFactorGridBasedOut:
+      description: Daylight factor simulation.
+      properties:
+        actions:
+          description: List of actions for this simulation.
+          items:
+            $ref: '#/components/schemas/app__models__simulation__Action'
+          title: Actions
+          type: array
+        depends_on:
+          description: Name of other simulations that this simulation depends on.
+            This simulation will be executed after all dependencies are finished.
+          items:
+            type: string
+          title: Depends_On
+          type: array
+        grid_ids:
+          description: List of sensor grid ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Grid_Ids
+          type: array
+        id:
+          description: Simulation unique id.
+          format: uuid
+          title: Id
+          type: string
+        kind:
+          default: GirdBased
+          pattern: GirdBased
+          title: Kind
+          type: string
+        logs:
+          description: Link to related logs to this simulation.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Logs
+          type: string
+        model_ids:
+          description: List of model ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Model_Ids
+          type: array
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        outputs:
+          description: List of simulation outputs. Each output has a link to access
+            theoutput resource. The url will only be functional if the execution of
+            simulationis successful otherwise it will throw a `404 Not Found` error.
+          items:
+            $ref: '#/components/schemas/app__models__simulation__Action'
+          title: Outputs
+          type: array
+        radiance_parameters:
+          $ref: '#/components/schemas/RadianceParameters'
+        status:
+          $ref: '#/components/schemas/SimulationStatus'
+        type:
+          default: DaylightFactor
+          pattern: DaylightFactor
+          title: Type
+          type: string
+      required:
+      - name
+      - depends_on
+      - status
+      - id
+      - outputs
+      - actions
+      - grid_ids
+      - radiance_parameters
+      title: DaylightFactorGridBasedOut
+      type: object
+    Face:
+      description: "A single model face.\n\n    Some clever description"
+      properties:
+        apertures:
+          default: []
+          description: List of Apertures bound to the Face
+          items:
+            $ref: '#/components/schemas/Aperture'
+          title: Apertures
+          type: array
+        face_type:
+          default: Wall
+          enum:
+          - Wall
+          - RoofCeiling
+          - Floor
+          - AirWall
+          - Window
+          - Shading
+          title: Face_Type
+          type: string
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        rad_modifier:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier
+        rad_modifier_dir:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier_Dir
+        type:
+          enum:
+          - Face
+          title: Type
+        vertices:
+          items:
+            $ref: '#/components/schemas/Vertex'
+          title: Vertices
+          type: array
+      required:
+      - rad_modifier
+      - name
+      - vertices
+      - type
+      title: Face
+      type: object
+    Glass:
+      description: Glass Material Schema
+      properties:
+        b_transmittance:
+          maximum: 1.0
+          minimum: 0.0
+          title: B_Transmittance
+          type: number
+        g_transmittance:
+          maximum: 1.0
+          minimum: 0.0
+          title: G_Transmittance
+          type: number
+        modifier:
+          default: void
+          title: Modifier
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        r_transmittance:
+          maximum: 1.0
+          minimum: 0.0
+          title: R_Transmittance
+          type: number
+        refraction_index:
+          maximum: 5.0
+          minimum: 0.0
+          title: Refraction_Index
+          type: number
+        type:
+          enum:
+          - Glass
+          title: Type
+      required:
+      - type
+      - name
+      - r_transmittance
+      - g_transmittance
+      - b_transmittance
+      - refraction_index
+      title: Glass
+      type: object
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    Location:
+      description: Location.
+      properties:
+        elevation:
+          default: 0
+          description: A number for elevation of the location. Default is `0`.
+          minimum: 0.0
+          title: Elevation
+          type: number
+        latitude:
+          default: 0
+          description: Location latitude between `-90` and `90`. Default is `0`.
+          maximum: 90.0
+          minimum: -90.0
+          title: Latitude
+          type: number
+        longitude:
+          default: 0
+          description: Location longitude between `-180` (west) and `180` (east).
+            Default is `0`.
+          maximum: 180.0
+          minimum: -180.0
+          title: Longitude
+          type: number
+        time_zone:
+          default: 0
+          description: Time zone between `-12` hours (west) and `12` hours (east).
+            Default is `0`.
+          maximum: 12.0
+          minimum: -12.0
+          title: Time_Zone
+          type: number
+      title: Location
+      type: object
+    Log:
+      properties:
+        message:
+          description: Log message.
+          title: Message
+          type: string
+        source_info:
+          description: Information for the simulation that generated this log.
+          properties:
+            id:
+              description: Simulation id
+              format: uuid
+              title: Id
+              type: string
+            name:
+              description: Simulation name
+              title: Name
+              type: string
+          title: LogSourceInfo
+          type: object
+        timestamp:
+          format: date-time
+          title: Timestamp
+          type: string
+      required:
+      - timestamp
+      - source_info
+      - message
+      title: Log
+      type: object
+    LogSourceInfo:
+      properties:
+        id:
+          description: Simulation id
+          format: uuid
+          title: Id
+          type: string
+        name:
+          description: Simulation name
+          title: Name
+          type: string
+      title: LogSourceInfo
+      type: object
+    Model:
+      description: Face by Face Model Schema
+      properties:
+        convert_to_meters:
+          default: 1
+          description: Value to use to convert the current model into meters
+          title: Convert_To_Meters
+          type: number
+        faces:
+          default: []
+          description: List of model faces, can be of type Face or ShadeFace
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/Face'
+            - $ref: '#/components/schemas/ShadeFace'
+          title: Faces
+          type: array
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          description: Model name
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        type:
+          enum:
+          - Model
+          title: Type
+      required:
+      - type
+      - name
+      title: Model
+      type: object
+    ModelOut:
+      description: Face by Face Model Schema Out
+      properties:
+        convert_to_meters:
+          default: 1
+          description: Value to use to convert the current model into meters
+          title: Convert_To_Meters
+          type: number
+        created_at:
+          description: Model creation time.
+          example: '2019-04-07 22:34:16.764143'
+          format: date-time
+          title: Created_At
+          type: string
+        face_count:
+          description: Number of faces attached to this model
+          title: Face_Count
+          type: integer
+        faces_url:
+          description: URL to get faces from this model.
+          example: https://api.pollination.cloud/models/7bd00d58-6485-4ca6-b889-3da6d8df3ee4/faces
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Faces_Url
+          type: string
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          description: Model name
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        type:
+          enum:
+          - Model
+          title: Type
+        url:
+          description: URL to the model
+          example: https://api.pollination.cloud/models/7bd00d58-6485-4ca6-b889-3da6d8df3ee4
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Url
+          type: string
+      required:
+      - type
+      - name
+      - face_count
+      - created_at
+      - url
+      - faces_url
+      title: ModelOut
+      type: object
+    Opaque:
+      description: Opaque Material Schema
+      properties:
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        reflectance:
+          maximum: 1.0
+          minimum: 0.0
+          title: Reflectance
+          type: number
+        type:
+          enum:
+          - Opaque
+          title: Type
+      required:
+      - type
+      - name
+      - reflectance
+      title: Opaque
+      type: object
+    ParentFace:
+      description: Parent face information
+      properties:
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        type:
+          default: face
+          title: Type
+          type: string
+      required:
+      - name
+      title: ParentFace
+      type: object
+    Plastic:
+      description: Plastic Material Schema
+      properties:
+        b_reflectance:
+          maximum: 1.0
+          minimum: 0.0
+          title: B_Reflectance
+          type: number
+        g_reflectance:
+          maximum: 1.0
+          minimum: 0.0
+          title: G_Reflectance
+          type: number
+        modifier:
+          default: void
+          title: Modifier
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        r_reflectance:
+          maximum: 1.0
+          minimum: 0.0
+          title: R_Reflectance
+          type: number
+        roughness:
+          maximum: 1.0
+          minimum: 0.0
+          title: Roughness
+          type: number
+        specularity:
+          maximum: 1.0
+          minimum: 0.0
+          title: Specularity
+          type: number
+        type:
+          enum:
+          - Plastic
+          title: Type
+      required:
+      - type
+      - name
+      - r_reflectance
+      - g_reflectance
+      - b_reflectance
+      - specularity
+      - roughness
+      title: Plastic
+      type: object
+    PointInTimeGridBasedIn:
+      description: Point-in-time recipe.
+      properties:
+        depends_on:
+          description: Name of other simulations that this simulation depends on.
+            This simulation will be executed after all dependencies are finished.
+          items:
+            type: string
+          title: Depends_On
+          type: array
+        grid_ids:
+          description: List of sensor grid ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Grid_Ids
+          type: array
+        kind:
+          default: GirdBased
+          pattern: GirdBased
+          title: Kind
+          type: string
+        model_ids:
+          description: List of model ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Model_Ids
+          type: array
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        radiance_parameters:
+          $ref: '#/components/schemas/RadianceParameters'
+        simulation_type:
+          default: illuminance
+          description: Simulation output type. Options are `illuminance` and `radiation`
+          enum:
+          - illuminance
+          - radiation
+          title: Simulation_Type
+          type: string
+        sky:
+          anyOf:
+          - description: Radiance standard CIE sky.
+            properties:
+              datetime:
+                $ref: '#/components/schemas/DateTime'
+              location:
+                $ref: '#/components/schemas/Location'
+              north:
+                default: 0
+                description: A number between -360 and 360 that represents the degrees
+                  off from the y-axis to make North. The default North direction is
+                  set to the Y-axis. Default is 0 degrees.
+                maximum: 360
+                minimum: -360
+                title: North
+                type: number
+              sky_type:
+                default: +s
+                enum:
+                - +s
+                - -s
+                - +i
+                - -i
+                - -c
+                - -u
+                title: Sky_Type
+                type: string
+            required:
+            - location
+            - datetime
+            title: CIESky
+            type: object
+          - description: Radiance climate-based sky.
+            properties:
+              datetime:
+                $ref: '#/components/schemas/DateTime'
+              diffuse_irradiance:
+                description: Diffuse-horizontal irradiance in W/m^2.
+                title: Diffuse_Irradiance
+                type: number
+              direct_irradiance:
+                description: Direct-normal irradiance in W/m^2.
+                title: Direct_Irradiance
+                type: number
+              location:
+                $ref: '#/components/schemas/Location'
+              north:
+                default: 0
+                description: A number between -360 and 360 that represents the degrees
+                  off from the y-axis to make North. The default North direction is
+                  set to the Y-axis. Default is 0 degrees.
+                maximum: 360
+                minimum: -360
+                title: North
+                type: number
+            required:
+            - location
+            - datetime
+            - direct_irradiance
+            - diffuse_irradiance
+            title: ClimateBasedSky
+            type: object
+          description: Simulation sky
+          title: Sky
+        type:
+          default: PointInTime
+          pattern: PointInTime
+          title: Type
+          type: string
+      required:
+      - name
+      - depends_on
+      - grid_ids
+      - sky
+      title: PointInTimeGridBasedIn
+      type: object
+    PointInTimeGridBasedOut:
+      description: Point-in-time simulation.
+      properties:
+        actions:
+          description: List of actions for this simulation.
+          items:
+            $ref: '#/components/schemas/app__models__simulation__Action'
+          title: Actions
+          type: array
+        depends_on:
+          description: Name of other simulations that this simulation depends on.
+            This simulation will be executed after all dependencies are finished.
+          items:
+            type: string
+          title: Depends_On
+          type: array
+        grid_ids:
+          description: List of sensor grid ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Grid_Ids
+          type: array
+        id:
+          description: Simulation unique id.
+          format: uuid
+          title: Id
+          type: string
+        kind:
+          default: GirdBased
+          pattern: GirdBased
+          title: Kind
+          type: string
+        logs:
+          description: Link to related logs to this simulation.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Logs
+          type: string
+        model_ids:
+          description: List of model ids for this simulation.
+          format: uuid
+          items:
+            type: string
+          title: Model_Ids
+          type: array
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        outputs:
+          description: List of simulation outputs. Each output has a link to access
+            theoutput resource. The url will only be functional if the execution of
+            simulationis successful otherwise it will throw a `404 Not Found` error.
+          items:
+            $ref: '#/components/schemas/app__models__simulation__Action'
+          title: Outputs
+          type: array
+        radiance_parameters:
+          $ref: '#/components/schemas/RadianceParameters'
+        simulation_type:
+          enum:
+          - illuminance
+          - radiation
+          title: Simulation_Type
+          type: string
+        sky:
+          anyOf:
+          - description: Radiance standard CIE sky.
+            properties:
+              datetime:
+                $ref: '#/components/schemas/DateTime'
+              location:
+                $ref: '#/components/schemas/Location'
+              north:
+                default: 0
+                description: A number between -360 and 360 that represents the degrees
+                  off from the y-axis to make North. The default North direction is
+                  set to the Y-axis. Default is 0 degrees.
+                maximum: 360
+                minimum: -360
+                title: North
+                type: number
+              sky_type:
+                default: +s
+                enum:
+                - +s
+                - -s
+                - +i
+                - -i
+                - -c
+                - -u
+                title: Sky_Type
+                type: string
+            required:
+            - location
+            - datetime
+            title: CIESky
+            type: object
+          - description: Radiance climate-based sky.
+            properties:
+              datetime:
+                $ref: '#/components/schemas/DateTime'
+              diffuse_irradiance:
+                description: Diffuse-horizontal irradiance in W/m^2.
+                title: Diffuse_Irradiance
+                type: number
+              direct_irradiance:
+                description: Direct-normal irradiance in W/m^2.
+                title: Direct_Irradiance
+                type: number
+              location:
+                $ref: '#/components/schemas/Location'
+              north:
+                default: 0
+                description: A number between -360 and 360 that represents the degrees
+                  off from the y-axis to make North. The default North direction is
+                  set to the Y-axis. Default is 0 degrees.
+                maximum: 360
+                minimum: -360
+                title: North
+                type: number
+            required:
+            - location
+            - datetime
+            - direct_irradiance
+            - diffuse_irradiance
+            title: ClimateBasedSky
+            type: object
+          description: Simulation sky
+          title: Sky
+        status:
+          $ref: '#/components/schemas/SimulationStatus'
+        type:
+          default: PointInTime
+          pattern: PointInTime
+          title: Type
+          type: string
+      required:
+      - name
+      - depends_on
+      - status
+      - id
+      - outputs
+      - actions
+      - grid_ids
+      - radiance_parameters
+      - simulation_type
+      - sky
+      title: PointInTimeGridBasedOut
+      type: object
+    RadianceParameters:
+      description: "Parameters for Radiance-based simulations.\n    You can use base\
+        \ to set the values based on preset values and then use overwrite to\n   \
+        \ overwrite custom parameters."
+      properties:
+        base:
+          default: default
+          description: Base input value to set the initial parameters. The default
+            value is set to `default` which will use Radiance default parameters.
+            Other options are `low`, `medium` and `high`.
+          enum:
+          - default
+          - low
+          - medium
+          - high
+          example: default
+          title: Base
+          type: string
+        overwrite:
+          description: An optional string of Radiance parameters to overwrite base
+            values. e.g. `"-aa 0.01 -ad 4800"`
+          example: -ab 5 -aa 0.01 -ad 4800
+          pattern: -[\sa-zA-Z0-9.+]+
+          title: Overwrite
+          type: string
+      title: RadianceParameters
+      type: object
+    Sensor:
+      description: "A single sensor.\n\n    The first 3 values indicate the location\
+        \ and the second 3 valuse indicate the\n    direction of the sensor."
+      properties:
+        dx:
+          description: X coordinate of sensor direction
+          title: Dx
+          type: number
+        dy:
+          description: Y coordinate of sensor direction
+          title: Dy
+          type: number
+        dz:
+          description: Z coordinate of sensor direction
+          title: Dz
+          type: number
+        x:
+          description: X coordinate of sensor location
+          title: X
+          type: number
+        y:
+          description: Y coordinate of sensor location
+          title: Y
+          type: number
+        z:
+          description: Z coordinate of sensor location
+          title: Z
+          type: number
+      required:
+      - x
+      - y
+      - z
+      - dx
+      - dy
+      - dz
+      title: Sensor
+      type: object
+    SensorGridIn:
+      description: A flattened collection of sensors for grid-based studies.
+      properties:
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        sensors:
+          description: A flattened array of sensors.
+          example:
+          - dx: 0.0
+            dy: 0.0
+            dz: 1.0
+            x: 0.0
+            y: 0.0
+            z: 0.0
+          - dx: 0.0
+            dy: 1.0
+            dz: 0.0
+            x: 0.0
+            y: 0.0
+            z: 0.0
+          - dx: 0.0
+            dy: 0.0
+            dz: 1.0
+            x: 0.0
+            y: 1.0
+            z: 1.2
+          - dx: 0.0
+            dy: 1.0
+            dz: 0.0
+            x: 0.0
+            y: 1.0
+            z: 1.2
+          items:
+            $ref: '#/components/schemas/Sensor'
+          title: Sensors
+          type: array
+        type:
+          default: SensorGrid
+          pattern: SensorGrid
+          title: Type
+          type: string
+      required:
+      - name
+      - sensors
+      title: SensorGridIn
+      type: object
+    SensorGridOut:
+      description: A flattened collection of sensors for grid-based studies.
+      properties:
+        created_at:
+          description: Sensor grid creation time.
+          format: datetime
+          title: Created_At
+          type: string
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        sensor_count:
+          description: Total number of sensors.
+          title: Sensor_Count
+          type: integer
+        sensors_url:
+          description: URL to the sensor grid.
+          example: https://api.pollination.cloud/sensor-grids/7bd00d58-6485-4ca6-b889-3da6d8df3ee4/sensors
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Sensors_Url
+          type: string
+        type:
+          default: SensorGrid
+          pattern: SensorGrid
+          title: Type
+          type: string
+        url:
+          description: URL to get sensors for this grid.
+          example: https://api.pollination.cloud/sensor-grids/7bd00d58-6485-4ca6-b889-3da6d8df3ee4
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Url
+          type: string
+      required:
+      - id
+      - name
+      - sensor_count
+      - url
+      - sensors_url
+      title: SensorGridOut
+      type: object
+    ShadeFace:
+      description: ShadeFace Schema
+      properties:
+        face_type:
+          enum:
+          - Shading
+          title: Face_Type
+        id:
+          description: Unique UUID value.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        rad_modifier:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier
+        rad_modifier_dir:
+          anyOf:
+          - $ref: '#/components/schemas/Opaque'
+          - $ref: '#/components/schemas/Transparent'
+          - $ref: '#/components/schemas/Plastic'
+          - $ref: '#/components/schemas/Glass'
+          title: Rad_Modifier_Dir
+        type:
+          enum:
+          - ShadeFace
+          title: Type
+        vertices:
+          items:
+            $ref: '#/components/schemas/Vertex'
+          title: Vertices
+          type: array
+      required:
+      - rad_modifier
+      - name
+      - vertices
+      - face_type
+      - type
+      title: ShadeFace
+      type: object
+    SimulationEvent:
+      properties:
+        message:
+          title: Message
+          type: string
+        status:
+          description: Status of simulation/ workflow.
+          enum:
+          - Created
+          - Started
+          - Canceled
+          - Failed
+          - Finished
+          title: Status
+          type: string
+        timestamp:
+          format: datetime
+          title: Timestamp
+          type: string
+      required:
+      - message
+      - status
+      - timestamp
+      title: SimulationEvent
+      type: object
+    SimulationMinimal:
+      description: Minimal simulation representation.
+      properties:
+        id:
+          description: Simulation id.
+          format: uuid
+          title: Id
+          type: string
+        name:
+          description: Simulation name.
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+      required:
+      - name
+      - id
+      title: SimulationMinimal
+      type: object
+    SimulationStatus:
+      description: Status for a single simulation.
+      properties:
+        history:
+          description: A list of simulation events
+          example:
+          - status: Created
+            timestamp: '2019-03-11T18:47:13Z'
+          - status: Started
+            timestamp: '2019-03-11T18:47:20Z'
+          - status: Canceled
+            timestamp: '2019-03-11T18:47:30Z'
+          - status: Started
+            timestamp: '2019-03-11T18:48:25Z'
+          - status: Finished
+            timestamp: '2019-03-11T19:09:21Z'
+          items:
+            $ref: '#/components/schemas/SimulationEvent'
+          title: History
+          type: array
+        status:
+          description: Final status of the simulation
+          enum:
+          - Created
+          - Started
+          - Canceled
+          - Failed
+          - Finished
+          title: Status
+          type: string
+      required:
+      - status
+      - history
+      title: SimulationStatus
+      type: object
+    Transparent:
+      description: Transparent Material Schema
+      properties:
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        transmittance:
+          maximum: 1.0
+          minimum: 0.0
+          title: Transmittance
+          type: number
+        type:
+          enum:
+          - Transparent
+          title: Type
+      required:
+      - type
+      - name
+      - transmittance
+      title: Transparent
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            type: string
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    Vertex:
+      description: Individual Vertex Schema
+      properties:
+        x:
+          description: X coordinate of the vertex
+          title: X
+          type: number
+        y:
+          description: y coordinate of the vertex
+          title: Y
+          type: number
+        z:
+          description: z coordinate of the vertex
+          title: Z
+          type: number
+      required:
+      - x
+      - y
+      - z
+      title: Vertex
+      type: object
+    WorkflowEvent:
+      properties:
+        canceled:
+          description: Canceled simulations.
+          items:
+            $ref: '#/components/schemas/SimulationMinimal'
+          title: Canceled
+          type: array
+        created:
+          description: Created simulations.
+          items:
+            $ref: '#/components/schemas/SimulationMinimal'
+          title: Created
+          type: array
+        failed:
+          description: Failed simulations.
+          items:
+            $ref: '#/components/schemas/SimulationMinimal'
+          title: Failed
+          type: array
+        finished:
+          description: Finished simulations.
+          items:
+            $ref: '#/components/schemas/SimulationMinimal'
+          title: Finished
+          type: array
+        started:
+          description: Started simulations.
+          items:
+            $ref: '#/components/schemas/SimulationMinimal'
+          title: Started
+          type: array
+      required:
+      - created
+      - started
+      - canceled
+      - failed
+      - finished
+      title: WorkflowEvent
+      type: object
+    WorkflowIn:
+      description: Pollination workflow.
+      properties:
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        simulations:
+          anyOf:
+          - description: Daylight factor recipe.
+            properties:
+              depends_on:
+                description: Name of other simulations that this simulation depends
+                  on. This simulation will be executed after all dependencies are
+                  finished.
+                items:
+                  type: string
+                title: Depends_On
+                type: array
+              grid_ids:
+                description: List of sensor grid ids for this simulation.
+                format: uuid
+                items:
+                  type: string
+                title: Grid_Ids
+                type: array
+              kind:
+                default: GirdBased
+                pattern: GirdBased
+                title: Kind
+                type: string
+              model_ids:
+                description: List of model ids for this simulation.
+                format: uuid
+                items:
+                  type: string
+                title: Model_Ids
+                type: array
+              name:
+                pattern: ^[.A-Za-z0-9_-]*$
+                title: Name
+                type: string
+              radiance_parameters:
+                $ref: '#/components/schemas/RadianceParameters'
+              type:
+                default: DaylightFactor
+                pattern: DaylightFactor
+                title: Type
+                type: string
+            required:
+            - name
+            - depends_on
+            - grid_ids
+            title: DaylightFactorGridBasedIn
+            type: object
+          - description: Point-in-time recipe.
+            properties:
+              depends_on:
+                description: Name of other simulations that this simulation depends
+                  on. This simulation will be executed after all dependencies are
+                  finished.
+                items:
+                  type: string
+                title: Depends_On
+                type: array
+              grid_ids:
+                description: List of sensor grid ids for this simulation.
+                format: uuid
+                items:
+                  type: string
+                title: Grid_Ids
+                type: array
+              kind:
+                default: GirdBased
+                pattern: GirdBased
+                title: Kind
+                type: string
+              model_ids:
+                description: List of model ids for this simulation.
+                format: uuid
+                items:
+                  type: string
+                title: Model_Ids
+                type: array
+              name:
+                pattern: ^[.A-Za-z0-9_-]*$
+                title: Name
+                type: string
+              radiance_parameters:
+                $ref: '#/components/schemas/RadianceParameters'
+              simulation_type:
+                default: illuminance
+                description: Simulation output type. Options are `illuminance` and
+                  `radiation`
+                enum:
+                - illuminance
+                - radiation
+                title: Simulation_Type
+                type: string
+              sky:
+                anyOf:
+                - description: Radiance standard CIE sky.
+                  properties:
+                    datetime:
+                      $ref: '#/components/schemas/DateTime'
+                    location:
+                      $ref: '#/components/schemas/Location'
+                    north:
+                      default: 0
+                      description: A number between -360 and 360 that represents the
+                        degrees off from the y-axis to make North. The default North
+                        direction is set to the Y-axis. Default is 0 degrees.
+                      maximum: 360
+                      minimum: -360
+                      title: North
+                      type: number
+                    sky_type:
+                      default: +s
+                      enum:
+                      - +s
+                      - -s
+                      - +i
+                      - -i
+                      - -c
+                      - -u
+                      title: Sky_Type
+                      type: string
+                  required:
+                  - location
+                  - datetime
+                  title: CIESky
+                  type: object
+                - description: Radiance climate-based sky.
+                  properties:
+                    datetime:
+                      $ref: '#/components/schemas/DateTime'
+                    diffuse_irradiance:
+                      description: Diffuse-horizontal irradiance in W/m^2.
+                      title: Diffuse_Irradiance
+                      type: number
+                    direct_irradiance:
+                      description: Direct-normal irradiance in W/m^2.
+                      title: Direct_Irradiance
+                      type: number
+                    location:
+                      $ref: '#/components/schemas/Location'
+                    north:
+                      default: 0
+                      description: A number between -360 and 360 that represents the
+                        degrees off from the y-axis to make North. The default North
+                        direction is set to the Y-axis. Default is 0 degrees.
+                      maximum: 360
+                      minimum: -360
+                      title: North
+                      type: number
+                  required:
+                  - location
+                  - datetime
+                  - direct_irradiance
+                  - diffuse_irradiance
+                  title: ClimateBasedSky
+                  type: object
+                description: Simulation sky
+                title: Sky
+              type:
+                default: PointInTime
+                pattern: PointInTime
+                title: Type
+                type: string
+            required:
+            - name
+            - depends_on
+            - grid_ids
+            - sky
+            title: PointInTimeGridBasedIn
+            type: object
+          description: List of simulations in this workflow.
+          format: uuid
+          title: Simulations
+      required:
+      - name
+      title: WorkflowIn
+      type: object
+    WorkflowOut:
+      description: Pollination workflow.
+      properties:
+        actions:
+          description: List of actions for this workflow.
+          items:
+            $ref: '#/components/schemas/app__models__simulation__Action'
+          title: Actions
+          type: array
+        id:
+          description: Simulation unique id.
+          format: uuid
+          title: Id
+          type: string
+        logs:
+          description: Link to related logs to this workflow.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Logs
+          type: string
+        name:
+          pattern: ^[.A-Za-z0-9_-]*$
+          title: Name
+          type: string
+        simulations:
+          description: Link to related simulations to this workflow.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Simulations
+          type: string
+        status:
+          $ref: '#/components/schemas/WorkflowStatus'
+      required:
+      - name
+      - status
+      - id
+      - actions
+      title: WorkflowOut
+      type: object
+    WorkflowStatus:
+      description: Workflow status based on each simulation status.
+      properties:
+        history:
+          description: A list of workflow events for each simulation
+          items:
+            $ref: '#/components/schemas/WorkflowEvent'
+          title: History
+          type: array
+        status:
+          description: Final status of the workflow
+          enum:
+          - Created
+          - Started
+          - Canceled
+          - Failed
+          - Finished
+          title: Status
+          type: string
+      required:
+      - status
+      - history
+      title: WorkflowStatus
+      type: object
+    app__models__action__Action:
+      properties:
+        action:
+          enum:
+          - Start
+          - Stop
+          title: Action
+          type: string
+      required:
+      - action
+      title: Action
+      type: object
+    app__models__simulation__Action:
+      description: A HTTP action
+      properties:
+        payload:
+          description: HTTP call payload
+          title: Payload
+          type: object
+        url:
+          description: Action url.
+          format: uri
+          maxLength: 65536
+          minLength: 1
+          title: Url
+          type: string
+        verb:
+          default: Put
+          enum:
+          - Head
+          - Get
+          - Post
+          - Patch
+          - Put
+          - Delete
+          title: Verb
+          type: string
+      required:
+      - url
+      title: Action
+      type: object
+  securitySchemes:
+    JWT:
+      scheme: bearer
+      type: http
+externalDocs:
+  description: Find out more about Pollination Cloud.
+  url: https://pollination.cloud/
+info:
+  contact:
+    email: hello@pollination.solutions
+  description: ''
+  license:
+    name: AGPL
+    url: https://www.gnu.org/licenses/agpl-3.0.en.html
+  termsOfService: https://pollination.cloud/terms
+  title: pollination.cloud API
+  version: 0.0.1
+  x-logo:
+    url: https://user-images.githubusercontent.com/2915573/53690998-7239bb00-3d43-11e9-85b1-d9ac9d140c0f.png
+openapi: 3.0.2
+paths:
+  /models/:
+    get:
+      description: Retrieve a list of models.
+      operationId: get_models
+      parameters:
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ModelOut'
+                title: Response_Get_Models
+                type: array
+          description: Retrieved
+          headers:
+            Link:
+              description: The Link header with pagination information. For details
+                see [link header](https://pollination.cloud/api/#section/Pagination/Link-header).
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Models
+      tags:
+      - Model
+    post:
+      description: Create a new model.
+      operationId: create_model
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Face by Face Model Schema
+              example:
+                convert_to_meters: 1
+                faces:
+                - face_type: Floor
+                  name: floor
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    b_reflectance: 0.2
+                    g_reflectance: 0.2
+                    modifier: void
+                    name: generic_floor
+                    r_reflectance: 0.2
+                    roughness: 0
+                    specularity: 0
+                    type: Plastic
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: 0
+                    y: 0
+                    z: 3.2
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 3.2
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 3.2
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 3.2
+                - face_type: RoofCeiling
+                  name: ceiling
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    b_reflectance: 0.8
+                    g_reflectance: 0.8
+                    modifier: void
+                    name: generic_roof
+                    r_reflectance: 0.8
+                    roughness: 0
+                    specularity: 0
+                    type: Plastic
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: 0
+                    y: 0
+                    z: 7.4
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 7.4
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 7.4
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 7.4
+                - apertures:
+                  - face_type: Window
+                    name: back_glazing
+                    parent:
+                      name: back_wall
+                      type: face
+                    rad_modifier:
+                      b_transmittance: 0.6
+                      g_transmittance: 0.6
+                      modifier: void
+                      name: generic_glass
+                      r_transmittance: 0.6
+                      refraction_index: 1.52
+                      type: Glass
+                    type: Aperture
+                    vertices:
+                    - x: 0.7778174593052024
+                      y: 0.7778174593052023
+                      z: 3.9000000000000004
+                    - x: 2.1920310216782974
+                      y: 2.192031021678297
+                      z: 3.9000000000000004
+                    - x: 2.1920310216782974
+                      y: 2.192031021678297
+                      z: 5.9
+                    - x: 0.7778174593052024
+                      y: 0.7778174593052023
+                      z: 5.9
+                  face_type: Wall
+                  name: back_wall
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    b_reflectance: 0.5
+                    g_reflectance: 0.5
+                    modifier: void
+                    name: generic_wall
+                    r_reflectance: 0.5
+                    roughness: 0
+                    specularity: 0
+                    type: Plastic
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: 0
+                    y: 0
+                    z: 3.2
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 3.2
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 7.4
+                  - x: 0
+                    y: 0
+                    z: 7.4
+                - face_type: Wall
+                  name: right_wall
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    b_reflectance: 0.5
+                    g_reflectance: 0.5
+                    modifier: void
+                    name: generic_wall
+                    r_reflectance: 0.5
+                    roughness: 0
+                    specularity: 0
+                    type: Plastic
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 3.2
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 3.2
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 7.4
+                  - x: 2.9698484809835
+                    y: 2.9698484809834995
+                    z: 7.4
+                - face_type: Wall
+                  name: front_wall
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    modifier: void
+                    name: generic_wall
+                    reflectance: 0.5
+                    type: Opaque
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 3.2
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 3.2
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 7.4
+                  - x: -1.2727922061357848
+                    y: 7.212489168102785
+                    z: 7.4
+                - face_type: Wall
+                  name: left_wall
+                  parent:
+                    name: south_room
+                    type: zone
+                  rad_modifier:
+                    modifier: void
+                    name: generic_wall
+                    reflectance: 0.5
+                    type: Opaque
+                  rad_modifier_dir:
+                    name: black
+                    reflectance: 0
+                    type: Opaque
+                  type: Face
+                  vertices:
+                  - x: 0
+                    y: 0
+                    z: 3.2
+                  - x: 0
+                    y: 0
+                    z: 7.4
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 7.4
+                  - x: -4.242640687119285
+                    y: 4.242640687119286
+                    z: 3.2
+                name: face_by_face_model
+                type: Model
+              properties:
+                convert_to_meters:
+                  default: 1
+                  description: Value to use to convert the current model into meters
+                  title: Convert_To_Meters
+                  type: number
+                faces:
+                  default: []
+                  description: List of model faces, can be of type Face or ShadeFace
+                  items:
+                    anyOf:
+                    - $ref: '#/components/schemas/Face'
+                    - $ref: '#/components/schemas/ShadeFace'
+                  title: Faces
+                  type: array
+                id:
+                  description: Unique UUID value.
+                  format: uuid
+                  title: Id
+                  type: string
+                name:
+                  description: Model name
+                  pattern: ^[.A-Za-z0-9_-]*$
+                  title: Name
+                  type: string
+                type:
+                  enum:
+                  - Model
+                  title: Type
+              required:
+              - type
+              - name
+              title: Model
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Created successfully
+          headers:
+            Location:
+              description: Location of the newly created resource.
+              schema:
+                format: url
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Create a Model
+      tags:
+      - Model
+  /models/{id}:
+    delete:
+      description: Delete a sensor grid.
+      operationId: del_model
+      parameters:
+      - description: Model id.
+        in: path
+        name: id
+        required: true
+        schema:
+          description: Model id.
+          format: uuid
+          title: Model id
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Delete a Model
+      tags:
+      - Model
+    get:
+      description: Retrieve a sensor grid.
+      operationId: get_model
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Model id.
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelOut'
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get a Model
+      tags:
+      - Model
+  /models/{id}/faces:
+    get:
+      description: "Retrieve list of sensors for a sensor grid.\n    See Location\
+        \ in response headers for paging links.\n    "
+      operationId: get_faces
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: model id.
+          type: string
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Face'
+                title: Response_Get_Faces
+                type: array
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Model Faces
+      tags:
+      - Model
+    post:
+      description: Create new model faces.
+      operationId: create_faces
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Model id.
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: A list of Pollination model faces
+              example:
+              - face_type: Floor
+                name: floor
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  b_reflectance: 0.2
+                  g_reflectance: 0.2
+                  modifier: void
+                  name: generic_floor
+                  r_reflectance: 0.2
+                  roughness: 0
+                  specularity: 0
+                  type: Plastic
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: 0
+                  y: 0
+                  z: 3.2
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 3.2
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 3.2
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 3.2
+              - face_type: RoofCeiling
+                name: ceiling
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  b_reflectance: 0.8
+                  g_reflectance: 0.8
+                  modifier: void
+                  name: generic_roof
+                  r_reflectance: 0.8
+                  roughness: 0
+                  specularity: 0
+                  type: Plastic
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: 0
+                  y: 0
+                  z: 7.4
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 7.4
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 7.4
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 7.4
+              - apertures:
+                - face_type: Window
+                  name: back_glazing
+                  parent:
+                    name: back_wall
+                    type: face
+                  rad_modifier:
+                    b_transmittance: 0.6
+                    g_transmittance: 0.6
+                    modifier: void
+                    name: generic_glass
+                    r_transmittance: 0.6
+                    refraction_index: 1.52
+                    type: Glass
+                  type: Aperture
+                  vertices:
+                  - x: 0.7778174593052024
+                    y: 0.7778174593052023
+                    z: 3.9000000000000004
+                  - x: 2.1920310216782974
+                    y: 2.192031021678297
+                    z: 3.9000000000000004
+                  - x: 2.1920310216782974
+                    y: 2.192031021678297
+                    z: 5.9
+                  - x: 0.7778174593052024
+                    y: 0.7778174593052023
+                    z: 5.9
+                face_type: Wall
+                name: back_wall
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  b_reflectance: 0.5
+                  g_reflectance: 0.5
+                  modifier: void
+                  name: generic_wall
+                  r_reflectance: 0.5
+                  roughness: 0
+                  specularity: 0
+                  type: Plastic
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: 0
+                  y: 0
+                  z: 3.2
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 3.2
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 7.4
+                - x: 0
+                  y: 0
+                  z: 7.4
+              - face_type: Wall
+                name: right_wall
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  b_reflectance: 0.5
+                  g_reflectance: 0.5
+                  modifier: void
+                  name: generic_wall
+                  r_reflectance: 0.5
+                  roughness: 0
+                  specularity: 0
+                  type: Plastic
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 3.2
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 3.2
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 7.4
+                - x: 2.9698484809835
+                  y: 2.9698484809834995
+                  z: 7.4
+              - face_type: Wall
+                name: front_wall
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  modifier: void
+                  name: generic_wall
+                  reflectance: 0.5
+                  type: Opaque
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 3.2
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 3.2
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 7.4
+                - x: -1.2727922061357848
+                  y: 7.212489168102785
+                  z: 7.4
+              - face_type: Wall
+                name: left_wall
+                parent:
+                  name: south_room
+                  type: zone
+                rad_modifier:
+                  modifier: void
+                  name: generic_wall
+                  reflectance: 0.5
+                  type: Opaque
+                rad_modifier_dir:
+                  name: black
+                  reflectance: 0
+                  type: Opaque
+                type: Face
+                vertices:
+                - x: 0
+                  y: 0
+                  z: 3.2
+                - x: 0
+                  y: 0
+                  z: 7.4
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 7.4
+                - x: -4.242640687119285
+                  y: 4.242640687119286
+                  z: 3.2
+              items:
+                $ref: '#/components/schemas/Face'
+              title: Faces
+              type: array
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Created successfully
+          headers:
+            Location:
+              description: Location of the newly created resource.
+              schema:
+                format: url
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Create Model Faces
+      tags:
+      - Model
+  /sensor-grids/:
+    get:
+      description: Retrieve a list of sensor grids.
+      operationId: get_sensor_grids
+      parameters:
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SensorGridOut'
+                title: Response_Get_Sensor_Grids
+                type: array
+          description: Retrieved
+          headers:
+            Link:
+              description: The Link header with pagination information. For details
+                see [link header](https://pollination.cloud/api/#section/Pagination/Link-header).
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Sensor Grids
+      tags:
+      - Sensor Grid
+    post:
+      description: Create a new grid of sensors.
+      operationId: create_sensor_grid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: A flattened collection of sensors for grid-based studies.
+              example:
+                name: example_grid
+                sensors:
+                - dx: 0.0
+                  dy: 0.0
+                  dz: 1.0
+                  x: 0.0
+                  y: 0.0
+                  z: 0.0
+                - dx: 0.0
+                  dy: 1.0
+                  dz: 0.0
+                  x: 0.0
+                  y: 0.0
+                  z: 0.0
+                - dx: 0.0
+                  dy: 0.0
+                  dz: 1.0
+                  x: 0.0
+                  y: 1.0
+                  z: 1.2
+                - dx: 0.0
+                  dy: 1.0
+                  dz: 0.0
+                  x: 0.0
+                  y: 1.0
+                  z: 1.2
+                type: SensorGrid
+              properties:
+                name:
+                  pattern: ^[.A-Za-z0-9_-]*$
+                  title: Name
+                  type: string
+                sensors:
+                  description: A flattened array of sensors.
+                  example:
+                  - dx: 0.0
+                    dy: 0.0
+                    dz: 1.0
+                    x: 0.0
+                    y: 0.0
+                    z: 0.0
+                  - dx: 0.0
+                    dy: 1.0
+                    dz: 0.0
+                    x: 0.0
+                    y: 0.0
+                    z: 0.0
+                  - dx: 0.0
+                    dy: 0.0
+                    dz: 1.0
+                    x: 0.0
+                    y: 1.0
+                    z: 1.2
+                  - dx: 0.0
+                    dy: 1.0
+                    dz: 0.0
+                    x: 0.0
+                    y: 1.0
+                    z: 1.2
+                  items:
+                    $ref: '#/components/schemas/Sensor'
+                  title: Sensors
+                  type: array
+                type:
+                  default: SensorGrid
+                  pattern: SensorGrid
+                  title: Type
+                  type: string
+              required:
+              - name
+              - sensors
+              title: SensorGridIn
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Created successfully
+          headers:
+            Location:
+              description: Location of the newly created resource.
+              schema:
+                format: url
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Create a Sensor Grid
+      tags:
+      - Sensor Grid
+  /sensor-grids/{gid}:
+    delete:
+      description: Delete a sensor grid.
+      operationId: del_sensor_grid
+      parameters:
+      - description: Grid id.
+        in: path
+        name: gid
+        required: true
+        schema:
+          description: Grid id.
+          format: uuid
+          title: Grid id
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Delete a Sensor Grid
+      tags:
+      - Sensor Grid
+    get:
+      description: Retrieve a sensor grid.
+      operationId: get_sensor_grid
+      parameters:
+      - in: path
+        name: gid
+        required: true
+        schema:
+          format: uuid
+          title: Grid id.
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SensorGridOut'
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get a Sensor Grid
+      tags:
+      - Sensor Grid
+  /sensor-grids/{gid}/sensors:
+    get:
+      description: "Retrieve list of sensors for a sensor grid.\n    See Location\
+        \ in response headers for paging links.\n    "
+      operationId: get_sensors
+      parameters:
+      - in: path
+        name: gid
+        required: true
+        schema:
+          format: uuid
+          title: Grid id.
+          type: string
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Sensor'
+                title: Response_Get_Sensors
+                type: array
+          description: Retrieved
+          headers:
+            Link:
+              description: The Link header with pagination information. For details
+                see [link header](https://pollination.cloud/api/#section/Pagination/Link-header).
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Sensors
+      tags:
+      - Sensor Grid
+  /simulations/:
+    get:
+      description: Retrieve a list of simulations.
+      operationId: get_simulations
+      parameters:
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/DaylightFactorGridBasedOut'
+                  - $ref: '#/components/schemas/PointInTimeGridBasedOut'
+                title: Response_Get_Simulations
+                type: array
+          description: Retrieved
+          headers:
+            Link:
+              description: The Link header with pagination information. For details
+                see [link header](https://pollination.cloud/api/#section/Pagination/Link-header).
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Simulations
+      tags:
+      - Simulation
+    post:
+      description: Create a new model.
+      operationId: create_simulation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: A Pollination simulation
+              items:
+                anyOf:
+                - $ref: '#/components/schemas/DaylightFactorGridBasedIn'
+                - $ref: '#/components/schemas/PointInTimeGridBasedIn'
+              title: Simulation
+              type: array
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Created successfully
+          headers:
+            Location:
+              description: Location of the newly created resource.
+              schema:
+                format: url
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Create a Simulation
+      tags:
+      - Simulation
+  /simulations/{id}:
+    delete:
+      description: Delete a simulation.
+      operationId: del_simulation
+      parameters:
+      - description: Simulation id.
+        in: path
+        name: id
+        required: true
+        schema:
+          description: Simulation id.
+          format: uuid
+          title: Simulation id
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Delete a Simulation
+      tags:
+      - Simulation
+    get:
+      description: Retrieve a simulation.
+      operationId: get_simulation
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Simulation id.
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/DaylightFactorGridBasedOut'
+                - $ref: '#/components/schemas/PointInTimeGridBasedOut'
+                title: Response_Get_Simulation
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get a Simulation
+      tags:
+      - Simulation
+  /simulations/{id}/actions:
+    post:
+      description: Start or stop execution of a simulation.
+      operationId: control_simulation
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Simulation id.
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: A simulation action
+              properties:
+                action:
+                  enum:
+                  - Start
+                  - Stop
+                  title: Action
+                  type: string
+              required:
+              - action
+              title: Action
+              type: object
+        required: true
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Control a Simulation
+      tags:
+      - Simulation
+  /simulations/{id}/logs:
+    get:
+      description: Retrieve simulation logs.
+      operationId: get_simulation_logs
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Simulation id.
+          type: string
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Log'
+                title: Response_Get_Simulation_Logs
+                type: array
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Simulation Logs
+      tags:
+      - Simulation
+  /simulations/{id}/outputs:
+    post:
+      description: Request a simulation output.
+      operationId: request_simulation_output
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Simulation id.
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: An output object
+              title: Output request
+              type: object
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accepted'
+          description: Accepted
+          headers:
+            Retry-After:
+              description: Suggested time to retry after in seconds.
+              schema:
+                default: 60
+                type: integer
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Request a simulation output
+      tags:
+      - Simulation
+  /simulations/{id}/outputs/{oid}:
+    get:
+      description: Retrieve simulation output.
+      operationId: get_simulation_output
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Simulation id.
+          type: string
+      - in: path
+        name: oid
+        required: true
+        schema:
+          format: uuid
+          title: Output id.
+          type: string
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '102':
+          description: Processing
+          headers:
+            Retry-After:
+              description: Suggested time to retry after in seconds.
+              schema:
+                default: 60
+                type: integer
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Simulation Output
+      tags:
+      - Simulation
+  /workflows/:
+    get:
+      description: Retrieve a list of workflows.
+      operationId: get_workflows
+      parameters:
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/WorkflowOut'
+                title: Response_Get_Workflows
+                type: array
+          description: Retrieved
+          headers:
+            Link:
+              description: The Link header with pagination information. For details
+                see [link header](https://pollination.cloud/api/#section/Pagination/Link-header).
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Workflows
+      tags:
+      - Workflow
+    post:
+      description: Create a new workflow.
+      operationId: create_workflow
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Pollination workflow.
+              properties:
+                name:
+                  pattern: ^[.A-Za-z0-9_-]*$
+                  title: Name
+                  type: string
+                simulations:
+                  anyOf:
+                  - description: Daylight factor recipe.
+                    properties:
+                      depends_on:
+                        description: Name of other simulations that this simulation
+                          depends on. This simulation will be executed after all dependencies
+                          are finished.
+                        items:
+                          type: string
+                        title: Depends_On
+                        type: array
+                      grid_ids:
+                        description: List of sensor grid ids for this simulation.
+                        format: uuid
+                        items:
+                          type: string
+                        title: Grid_Ids
+                        type: array
+                      kind:
+                        default: GirdBased
+                        pattern: GirdBased
+                        title: Kind
+                        type: string
+                      model_ids:
+                        description: List of model ids for this simulation.
+                        format: uuid
+                        items:
+                          type: string
+                        title: Model_Ids
+                        type: array
+                      name:
+                        pattern: ^[.A-Za-z0-9_-]*$
+                        title: Name
+                        type: string
+                      radiance_parameters:
+                        $ref: '#/components/schemas/RadianceParameters'
+                      type:
+                        default: DaylightFactor
+                        pattern: DaylightFactor
+                        title: Type
+                        type: string
+                    required:
+                    - name
+                    - depends_on
+                    - grid_ids
+                    title: DaylightFactorGridBasedIn
+                    type: object
+                  - description: Point-in-time recipe.
+                    properties:
+                      depends_on:
+                        description: Name of other simulations that this simulation
+                          depends on. This simulation will be executed after all dependencies
+                          are finished.
+                        items:
+                          type: string
+                        title: Depends_On
+                        type: array
+                      grid_ids:
+                        description: List of sensor grid ids for this simulation.
+                        format: uuid
+                        items:
+                          type: string
+                        title: Grid_Ids
+                        type: array
+                      kind:
+                        default: GirdBased
+                        pattern: GirdBased
+                        title: Kind
+                        type: string
+                      model_ids:
+                        description: List of model ids for this simulation.
+                        format: uuid
+                        items:
+                          type: string
+                        title: Model_Ids
+                        type: array
+                      name:
+                        pattern: ^[.A-Za-z0-9_-]*$
+                        title: Name
+                        type: string
+                      radiance_parameters:
+                        $ref: '#/components/schemas/RadianceParameters'
+                      simulation_type:
+                        default: illuminance
+                        description: Simulation output type. Options are `illuminance`
+                          and `radiation`
+                        enum:
+                        - illuminance
+                        - radiation
+                        title: Simulation_Type
+                        type: string
+                      sky:
+                        anyOf:
+                        - description: Radiance standard CIE sky.
+                          properties:
+                            datetime:
+                              $ref: '#/components/schemas/DateTime'
+                            location:
+                              $ref: '#/components/schemas/Location'
+                            north:
+                              default: 0
+                              description: A number between -360 and 360 that represents
+                                the degrees off from the y-axis to make North. The
+                                default North direction is set to the Y-axis. Default
+                                is 0 degrees.
+                              maximum: 360
+                              minimum: -360
+                              title: North
+                              type: number
+                            sky_type:
+                              default: +s
+                              enum:
+                              - +s
+                              - -s
+                              - +i
+                              - -i
+                              - -c
+                              - -u
+                              title: Sky_Type
+                              type: string
+                          required:
+                          - location
+                          - datetime
+                          title: CIESky
+                          type: object
+                        - description: Radiance climate-based sky.
+                          properties:
+                            datetime:
+                              $ref: '#/components/schemas/DateTime'
+                            diffuse_irradiance:
+                              description: Diffuse-horizontal irradiance in W/m^2.
+                              title: Diffuse_Irradiance
+                              type: number
+                            direct_irradiance:
+                              description: Direct-normal irradiance in W/m^2.
+                              title: Direct_Irradiance
+                              type: number
+                            location:
+                              $ref: '#/components/schemas/Location'
+                            north:
+                              default: 0
+                              description: A number between -360 and 360 that represents
+                                the degrees off from the y-axis to make North. The
+                                default North direction is set to the Y-axis. Default
+                                is 0 degrees.
+                              maximum: 360
+                              minimum: -360
+                              title: North
+                              type: number
+                          required:
+                          - location
+                          - datetime
+                          - direct_irradiance
+                          - diffuse_irradiance
+                          title: ClimateBasedSky
+                          type: object
+                        description: Simulation sky
+                        title: Sky
+                      type:
+                        default: PointInTime
+                        pattern: PointInTime
+                        title: Type
+                        type: string
+                    required:
+                    - name
+                    - depends_on
+                    - grid_ids
+                    - sky
+                    title: PointInTimeGridBasedIn
+                    type: object
+                  description: List of simulations in this workflow.
+                  format: uuid
+                  title: Simulations
+              required:
+              - name
+              title: WorkflowIn
+              type: object
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Created successfully
+          headers:
+            Location:
+              description: Location of the newly created resource.
+              schema:
+                format: url
+                type: string
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Create a Workflow
+      tags:
+      - Workflow
+  /workflows/{id}:
+    delete:
+      description: Delete a workflow.
+      operationId: del_workflow
+      parameters:
+      - description: Workflow id.
+        in: path
+        name: id
+        required: true
+        schema:
+          description: Workflow id.
+          format: uuid
+          title: Workflow id
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema: {}
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Delete a Workflow
+      tags:
+      - Workflow
+    get:
+      description: Retrieve a workflow.
+      operationId: get_workflow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Workflow id.
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowOut'
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get a Workflow
+      tags:
+      - Workflow
+  /workflows/{id}/actions/:
+    post:
+      description: Start or stop execution of a workflow.
+      operationId: control_workflow
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Workflow id.
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: A workflow action
+              properties:
+                action:
+                  enum:
+                  - Start
+                  - Stop
+                  title: Action
+                  type: string
+              required:
+              - action
+              title: Action
+              type: object
+        required: true
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedContent'
+          description: Success
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Control a Workflow
+      tags:
+      - Workflow
+  /workflows/{id}/logs:
+    get:
+      description: Retrieve cumulative logs for all simulations in a workflow.
+      operationId: get_workflow_logs
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          title: Workflow id.
+          type: string
+      - description: Page number starting from 1
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number starting from 1
+          minimum: 1.0
+          title: Page number
+          type: integer
+      - description: Number of items per page
+        in: query
+        name: per-page
+        required: false
+        schema:
+          default: 25
+          description: Number of items per page
+          maximum: 100.0
+          title: Items per page
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Log'
+                title: Response_Get_Workflow_Logs
+                type: array
+          description: Retrieved
+        '401':
+          description: Unauthorized
+        '403':
+          description: Access forbidden
+        '404':
+          description: Not found
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+        '500':
+          description: Server error
+      security:
+      - JWT: []
+      summary: Get Workflow Logs
+      tags:
+      - Workflow
+security:
+- JWT: []
+servers:
+- url: http://api.pollination.cloud
+tags:
+- description: 'Models includes geometrical information as well as materials, constructions,
+
+    and boundary conditions to describe a simulation model for daylight and energy
+
+    and CFD modeling.
+
+    '
+  name: Model
+- description: 'Sensor Grid is a collection of sensors for grid-based studies.
+
+    '
+  name: Sensor Grid
+- description: 'Simulation in Pollination is an executable recipe which has a set
+    of predefined
+
+    instruction to execute specfic set of commands. In the near future all the recipes
+
+    in Ladybug Tools plugins will be available as Pollination simulations.
+
+    '
+  name: Simulation
+- description: 'Workflow is a collection of usually interrelated simulations. Simulations
+    will be
+
+    executed in steps or in parallel based on interdependencies between simulations.
+
+    '
+  name: Workflow
