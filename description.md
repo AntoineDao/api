@@ -56,17 +56,17 @@ Pollination.
 ## 1. Create a model
 
 The first step for creating a simulation is to
-[submit your model](/#operation/create_model). A model includes geometry and
+[submit your model](#operation/create_model). A model includes geometry and
 related metadata for that geometry. It can be translated to analysis models that can be
 used by engines such as Radiance, OpenStudio/ EnergyPlus.
 
-[Pollination model](/#operation/create_model) schema is a collection of different type
+[Pollination model](#operation/create_model) schema is a collection of different type
 of faces. Each face can be a `Face`, `PolyFace` or a `ShadeFace`.
 
 You can download a sample model from
 [this link](https://github.com/pollination/model-service/blob/master/app/models/samples/model.py).
 
-Once you have created your model you can [submit your `model`](/#operation/create_model).
+Once you have created your model you can [submit your `model`](#operation/create_model).
 **POST /models** returns a `201 Created` response with with the `Location` information
 in the header and an `id` in the response. Here is a sample response for a model
 that is submitted successfully.
@@ -143,9 +143,9 @@ You can also use the `Link` to retrieve the model object.
 ## 3. Create a simulation
 
 Now that we have the model ids and grid ids in hand we can create a `simulation`. Use
-the [simulations](/#operation/create_simulation) endpoint to submit your simulation. The
+the [simulations](#operation/create_simulation) endpoint to submit your simulation. The
 response will be `202 Accepted` with the `url` to the simulation. Now that the simulation
-has been created you can use the `url` to [access the possible actions](/#operation/get_simulation)
+has been created you can use the `url` to [access the possible actions](#operation/get_simulation)
 for this simulation. There will be one for starting the simulation. 
   
 ```json
@@ -173,7 +173,7 @@ for this simulation. There will be one for starting the simulation.
 
 Use the start action from step 3 to start the simulation. Starting a simulation is
 considered an `action` and is accessible via the
-[/simulations/{id}/actions](/#operation/control_simulation) endpoint.
+[/simulations/{id}/actions](#operation/control_simulation) endpoint.
 
 Once the simulation is started check the `simulation` using the simulation
 `url` and monitor the `history` of the simulation. Possible options are `Created`,
@@ -302,7 +302,7 @@ access the final results.
 
 ## 6. Workflows
 
-You can use [Pollination workflows](/#tag/Workflow) to execute more than one simulation
+You can use [Pollination workflows](#tag/Workflow) to execute more than one simulation
 at the same time. A workflow can be used to run parametric studies or to create custom
 combination of simulations. Simulations can depend on each other and the outputs from one
 simulation can be passed to one or more follow up simulations.
