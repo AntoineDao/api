@@ -48,7 +48,7 @@ if __name__ == '__main__':
     # repository
     openapi_links = [
         'https://gist.githubusercontent.com/mostaphaRoudsari/0045cc5121c0ef2e11dd1646520103f3/raw/96851959c80fc39cc0d406ac0ea27d1a28951846/sensor_grid_openapi.json',
-        'https://gist.githubusercontent.com/mostaphaRoudsari/0045cc5121c0ef2e11dd1646520103f3/raw/f20fde61300b821f93f0d003007796f805fb1dac/model_openapi.json',
+        'https://gist.githubusercontent.com/mostaphaRoudsari/0045cc5121c0ef2e11dd1646520103f3/raw/24fe5461e5a9890ff44d7e99f30d859984f82fec/model_openapi.json',
         'https://gist.githubusercontent.com/mostaphaRoudsari/0045cc5121c0ef2e11dd1646520103f3/raw/a2ad251c010207b7c96281029a1d1be4b5aef0e7/simulation_openapi.json'
     ]
 
