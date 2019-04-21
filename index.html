@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pollination Cloud API Reference</title>
+    <!-- needed for adaptive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!--
+    ReDoc uses font options from the parent element
+    So override default browser styles
+    -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    
+  </head>
+  <body>
+    <div id="redoc_container"></div>
+    <script src="https://redocpro-cdn.redoc.ly/v1.0.0-beta.13/redocpro-standalone.min.js"></script>
+    <script>
+      RedocPro.init(
+        './openapi.json',
+        {"theme":{"colors":{"primary":{"main":"#32329f"}}},"redocURL":"https://redocpro-cdn.redoc.ly/v1.0.0-beta.13/redocpro-standalone.min.js","redocExport":"RedocPro","unstable_externalDescription":"description.md"},
+        document.getElementById("redoc_container")
+      );
+    </script>
+  </body>
+</html>

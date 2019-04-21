@@ -1,0 +1,42 @@
+openapi: 3.0.2
+info:
+  version: 0.0.1
+  title: pollination.cloud API
+  termsOfService: 'https://pollination.cloud/terms'
+  contact:
+    email: hello@pollination.solutions 
+  license:
+    name: AGPL
+    url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
+  x-logo:
+    url: "https://user-images.githubusercontent.com/2915573/53690998-7239bb00-3d43-11e9-85b1-d9ac9d140c0f.png"
+  description: |
+
+externalDocs:
+  description: Find out more about Pollination Cloud.
+  url: 'https://pollination.cloud/'
+
+servers:
+  - url: 'http://api.pollination.cloud'
+
+tags:
+  - name: Model
+    description: |
+      Models includes geometrical information as well as materials, constructions,
+      and boundary conditions to describe a simulation model for daylight and energy
+      and CFD modeling.
+  - name: Sensor Grid
+    description: |
+      Sensor Grid is a collection of sensors for grid-based studies.
+  - name: Simulation
+    description: |
+      Simulation in Pollination is an executable recipe which has a set of predefined
+      instruction to execute specfic set of commands. In the near future all the recipes
+      in Ladybug Tools plugins will be available as Pollination simulations.
+  - name: Workflow
+    description: |
+      Workflow is a collection of usually interrelated simulations. Simulations will be
+      executed in steps or in parallel based on interdependencies between simulations.
+
+security:
+  - JWT: []
