@@ -3,3 +3,4 @@ web_deploy
 node_modules
 .vscode/settings.json
 package-lock.json
+venv

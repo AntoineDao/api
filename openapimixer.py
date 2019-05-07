@@ -15,7 +15,7 @@ def main(openapi_links):
     
     # add empty fields
     openapi_doc['paths'] = {}
-    openapi_doc['components'] = {'schemas': {}, 'securitySchemes': {}}
+    openapi_doc['components']['schemas'] = {}
     
     # collect fields from micro-service openapi schemas
     print('loading documentation for micro-services...')
@@ -26,9 +26,6 @@ def main(openapi_links):
             openapi_doc['paths'][path] = value
         for schema, value in response['components']['schemas'].items():
             openapi_doc['components']['schemas'][schema] = value
-        # this is the same for all schemas
-        openapi_doc['components']['securitySchemes'] = \
-            response['components']['securitySchemes']
 
         r.close()
 

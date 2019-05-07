@@ -17,7 +17,14 @@ externalDocs:
   url: 'https://pollination.cloud/'
 
 servers:
-  - url: 'http://api.pollination.cloud'
+  - url: 'https://api.pollination.cloud'
+
+components:
+  securitySchemes:
+    JWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
 
 tags:
   - name: Model
@@ -37,6 +44,3 @@ tags:
     description: |
       Workflow is a collection of usually interrelated simulations. Simulations will be
       executed in steps or in parallel based on interdependencies between simulations.
-
-security:
-  - JWT: []
